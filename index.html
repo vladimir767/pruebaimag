@@ -117,7 +117,6 @@
             box-shadow: 0 0 0 3px rgba(26, 35, 50, 0.05);
         }
 
-        /* Estilo del input file */
         .file-input-wrapper {
             position: relative;
             overflow: hidden;
@@ -155,7 +154,6 @@
             font-style: italic;
         }
 
-        /* Botones de acción */
         .action-buttons {
             display: flex;
             flex-direction: column;
@@ -235,9 +233,6 @@
             gap: 12px;
         }
 
-        /* ============================================
-           MENSAJES DE ESTADO
-           ============================================ */
         .status-message {
             padding: 12px 16px;
             border-radius: 2px;
@@ -250,12 +245,6 @@
             background-color: #eff6ff;
             border-color: #3b82f6;
             color: #1e40af;
-        }
-
-        .status-warning {
-            background-color: #fef3c7;
-            border-color: #f59e0b;
-            color: #92400e;
         }
 
         /* ============================================
@@ -299,15 +288,12 @@
 </head>
 <body>
     <div class="main-container">
-        <!-- HEADER -->
         <header class="page-header">
             <h1>Sistema de Licencias de Conducir</h1>
             <p>Argentina Roleplay</p>
         </header>
 
-        <!-- AREA DE TRABAJO -->
         <div class="work-area">
-            <!-- PANEL IZQUIERDO: FORMULARIO -->
             <aside class="form-panel">
                 <h2 class="section-title">Datos del Conductor</h2>
 
@@ -316,7 +302,6 @@
                 </div>
 
                 <form id="licenseForm">
-                    <!-- Campo: Fotografía -->
                     <div class="form-field">
                         <label for="photoUpload">Fotografía</label>
                         <div class="file-input-wrapper">
@@ -328,31 +313,26 @@
                         <div class="file-name" id="fileName">Ningún archivo seleccionado</div>
                     </div>
 
-                    <!-- Campo: Número de Registro -->
                     <div class="form-field">
                         <label for="regNumber">Número de Registro</label>
                         <input type="text" id="regNumber" placeholder="AR-2024-001234" required>
                     </div>
 
-                    <!-- Campo: Nombre Completo -->
                     <div class="form-field">
                         <label for="fullName">Nombre Completo</label>
                         <input type="text" id="fullName" placeholder="Juan Pérez García" required>
                     </div>
 
-                    <!-- Campo: Fecha de Registro -->
                     <div class="form-field">
                         <label for="regDate">Fecha de Registro</label>
                         <input type="date" id="regDate" required>
                     </div>
 
-                    <!-- Campo: Fecha de Renovación -->
                     <div class="form-field">
                         <label for="renewDate">Fecha de Renovación</label>
                         <input type="date" id="renewDate" required>
                     </div>
 
-                    <!-- Campo: Modelo -->
                     <div class="form-field">
                         <label for="modelo">Modelo</label>
                         <select id="modelo" required>
@@ -363,7 +343,6 @@
                         </select>
                     </div>
 
-                    <!-- Botones de Acción -->
                     <div class="action-buttons">
                         <button type="submit" class="btn btn-primary">Generar Licencia</button>
                         <button type="button" class="btn btn-secondary" onclick="resetForm()">Limpiar Formulario</button>
@@ -371,7 +350,6 @@
                 </form>
             </aside>
 
-            <!-- PANEL DERECHO: VISTA PREVIA -->
             <main class="preview-panel">
                 <h2 class="preview-title">Vista Previa</h2>
                 <canvas id="licenseCanvas" width="1000" height="630"></canvas>
@@ -394,7 +372,6 @@
         /* ============================================
            INICIALIZACIÓN
            ============================================ */
-        // Establecer fechas por defecto
         const today = new Date();
         document.getElementById('regDate').valueAsDate = today;
         
@@ -402,7 +379,6 @@
         renewDate.setFullYear(renewDate.getFullYear() + 5);
         document.getElementById('renewDate').valueAsDate = renewDate;
 
-        // Dibujar canvas inicial vacío
         drawEmptyCanvas();
 
         /* ============================================
@@ -412,16 +388,13 @@
             const file = e.target.files[0];
             
             if (file) {
-                // Actualizar nombre del archivo
                 document.getElementById('fileName').textContent = file.name;
                 
-                // Validar que sea una imagen
                 if (!file.type.startsWith('image/')) {
                     alert('Por favor seleccione un archivo de imagen válido.');
                     return;
                 }
 
-                // Cargar imagen
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const img = new Image();
@@ -440,13 +413,11 @@
         document.getElementById('licenseForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // Validar que se haya cargado una imagen
             if (!uploadedImage) {
                 alert('Por favor cargue una fotografía antes de generar la licencia.');
                 return;
             }
 
-            // Recopilar datos del formulario
             const licenseData = {
                 regNumber: document.getElementById('regNumber').value,
                 fullName: document.getElementById('fullName').value,
@@ -455,7 +426,6 @@
                 modelo: document.getElementById('modelo').value
             };
 
-            // Generar licencia
             drawLicense(licenseData);
         });
 
@@ -463,11 +433,9 @@
            FUNCIÓN: DIBUJAR CANVAS VACÍO
            ============================================ */
         function drawEmptyCanvas() {
-            // Fondo gris claro
             ctx.fillStyle = '#f9fafb';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Texto centrado
             ctx.fillStyle = '#9ca3af';
             ctx.font = '18px Inter, sans-serif';
             ctx.textAlign = 'center';
@@ -476,23 +444,138 @@
         }
 
         /* ============================================
-           FUNCIÓN: DIBUJAR LICENCIA COMPLETA
+           FUNCIÓN: DIBUJAR PATRÓN ARGENTINO DE FONDO
            ============================================ */
-        function drawLicense(data) {
-            // Limpiar canvas
+        function drawArgentineBackground() {
+            // Fondo base blanco
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Borde exterior
+            // Patrón de líneas diagonales sutiles celeste
+            ctx.strokeStyle = 'rgba(135, 206, 235, 0.08)';
+            ctx.lineWidth = 1;
+            
+            for (let i = -canvas.height; i < canvas.width + canvas.height; i += 30) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i + canvas.height, canvas.height);
+                ctx.stroke();
+            }
+
+            // Banda superior celeste suave
+            const gradient = ctx.createLinearGradient(0, 0, 0, 140);
+            gradient.addColorStop(0, 'rgba(135, 206, 235, 0.15)');
+            gradient.addColorStop(1, 'rgba(135, 206, 235, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 100, canvas.width, 140);
+
+            // Banda inferior celeste suave
+            const gradientBottom = ctx.createLinearGradient(0, canvas.height - 60, 0, canvas.height);
+            gradientBottom.addColorStop(0, 'rgba(135, 206, 235, 0)');
+            gradientBottom.addColorStop(1, 'rgba(135, 206, 235, 0.15)');
+            ctx.fillStyle = gradientBottom;
+            ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
+        }
+
+        /* ============================================
+           FUNCIÓN: DIBUJAR BANDERA ARGENTINA
+           ============================================ */
+        function drawArgentineFlag(x, y, width, height) {
+            // Franja celeste superior
+            ctx.fillStyle = '#74acdf';
+            ctx.fillRect(x, y, width, height / 3);
+
+            // Franja blanca central
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(x, y + height / 3, width, height / 3);
+
+            // Franja celeste inferior
+            ctx.fillStyle = '#74acdf';
+            ctx.fillRect(x, y + (2 * height / 3), width, height / 3);
+
+            // Sol de Mayo simplificado (centro)
+            const sunX = x + width / 2;
+            const sunY = y + height / 2;
+            const sunRadius = Math.min(width, height) * 0.15;
+
+            // Círculo amarillo del sol
+            ctx.fillStyle = '#fcbf49';
+            ctx.beginPath();
+            ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Rayos del sol
+            ctx.strokeStyle = '#fcbf49';
+            ctx.lineWidth = 1.5;
+            for (let i = 0; i < 16; i++) {
+                const angle = (Math.PI * 2 * i) / 16;
+                const startX = sunX + Math.cos(angle) * sunRadius;
+                const startY = sunY + Math.sin(angle) * sunRadius;
+                const endX = sunX + Math.cos(angle) * (sunRadius * 1.6);
+                const endY = sunY + Math.sin(angle) * (sunRadius * 1.6);
+                
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+            }
+
+            // Borde de la bandera
             ctx.strokeStyle = '#e5e7eb';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x, y, width, height);
+        }
+
+        /* ============================================
+           FUNCIÓN: DIBUJAR MARCA DE AGUA
+           ============================================ */
+        function drawWatermark() {
+            ctx.save();
+            
+            // Configurar transparencia
+            ctx.globalAlpha = 0.03;
+            ctx.fillStyle = '#74acdf';
+            ctx.font = 'bold 120px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Rotar y dibujar texto
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(-Math.PI / 6);
+            ctx.fillText('ARGENTINA RP', 0, 0);
+            
+            ctx.restore();
+        }
+
+        /* ============================================
+           FUNCIÓN: DIBUJAR LICENCIA COMPLETA
+           ============================================ */
+        function drawLicense(data) {
+            // Paso 1: Fondo con patrón argentino
+            drawArgentineBackground();
+
+            // Paso 2: Marca de agua
+            drawWatermark();
+
+            // Paso 3: Borde exterior
+            ctx.strokeStyle = '#d1d5db';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
 
             /* ----------------------------------------
                HEADER
                ---------------------------------------- */
-            ctx.fillStyle = '#1a2332';
+            // Fondo del header con degradado
+            const headerGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            headerGradient.addColorStop(0, '#1a2332');
+            headerGradient.addColorStop(0.5, '#2c3e50');
+            headerGradient.addColorStop(1, '#1a2332');
+            ctx.fillStyle = headerGradient;
             ctx.fillRect(0, 0, canvas.width, 100);
+
+            // Línea decorativa celeste en el header
+            ctx.fillStyle = '#74acdf';
+            ctx.fillRect(0, 95, canvas.width, 5);
 
             // Título principal
             ctx.fillStyle = '#ffffff';
@@ -506,61 +589,118 @@
             ctx.fillStyle = '#a0aec0';
             ctx.fillText('Argentina Roleplay', canvas.width / 2, 65);
 
-            /* ----------------------------------------
-               FOTOGRAFÍA (IZQUIERDA)
-               ---------------------------------------- */
-            const photoX = 60;
-            const photoY = 150;
-            const photoWidth = 280;
-            const photoHeight = 350;
+            // Bandera argentina pequeña en esquina superior derecha
+            drawArgentineFlag(canvas.width - 180, 15, 140, 70);
 
-            // Dibujar la imagen cargada
+            /* ----------------------------------------
+               FOTOGRAFÍA CON MARCO ESTILIZADO
+               ---------------------------------------- */
+            const photoX = 50;
+            const photoY = 140;
+            const photoWidth = 280;
+            const photoHeight = 360;
+
+            // Marco exterior celeste
+            ctx.fillStyle = '#74acdf';
+            ctx.fillRect(photoX - 8, photoY - 8, photoWidth + 16, photoHeight + 16);
+
+            // Marco interior blanco
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(photoX - 4, photoY - 4, photoWidth + 8, photoHeight + 8);
+
+            // Dibujar la imagen del usuario
             if (uploadedImage) {
-                // Calcular recorte centrado
                 const imgAspect = uploadedImage.width / uploadedImage.height;
                 const targetAspect = photoWidth / photoHeight;
                 
                 let sx, sy, sWidth, sHeight;
                 
                 if (imgAspect > targetAspect) {
-                    // Imagen más ancha: recortar los lados
                     sHeight = uploadedImage.height;
                     sWidth = sHeight * targetAspect;
                     sx = (uploadedImage.width - sWidth) / 2;
                     sy = 0;
                 } else {
-                    // Imagen más alta: recortar arriba y abajo
                     sWidth = uploadedImage.width;
                     sHeight = sWidth / targetAspect;
                     sx = 0;
                     sy = (uploadedImage.height - sHeight) / 2;
                 }
 
+                ctx.save();
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 4;
+                
                 ctx.drawImage(
                     uploadedImage,
                     sx, sy, sWidth, sHeight,
                     photoX, photoY, photoWidth, photoHeight
                 );
+                
+                ctx.restore();
             }
 
-            // Borde de la foto
-            ctx.strokeStyle = '#d1d5db';
-            ctx.lineWidth = 1;
-            ctx.strokeRect(photoX, photoY, photoWidth, photoHeight);
+            // Patrón decorativo en esquinas de la foto
+            ctx.strokeStyle = '#74acdf';
+            ctx.lineWidth = 3;
+            const cornerSize = 20;
+            
+            // Esquina superior izquierda
+            ctx.beginPath();
+            ctx.moveTo(photoX - 4, photoY + cornerSize);
+            ctx.lineTo(photoX - 4, photoY - 4);
+            ctx.lineTo(photoX + cornerSize, photoY - 4);
+            ctx.stroke();
+            
+            // Esquina superior derecha
+            ctx.beginPath();
+            ctx.moveTo(photoX + photoWidth - cornerSize + 4, photoY - 4);
+            ctx.lineTo(photoX + photoWidth + 4, photoY - 4);
+            ctx.lineTo(photoX + photoWidth + 4, photoY + cornerSize);
+            ctx.stroke();
+            
+            // Esquina inferior izquierda
+            ctx.beginPath();
+            ctx.moveTo(photoX - 4, photoY + photoHeight - cornerSize + 4);
+            ctx.lineTo(photoX - 4, photoY + photoHeight + 4);
+            ctx.lineTo(photoX + cornerSize, photoY + photoHeight + 4);
+            ctx.stroke();
+            
+            // Esquina inferior derecha
+            ctx.beginPath();
+            ctx.moveTo(photoX + photoWidth - cornerSize + 4, photoY + photoHeight + 4);
+            ctx.lineTo(photoX + photoWidth + 4, photoY + photoHeight + 4);
+            ctx.lineTo(photoX + photoWidth + 4, photoY + photoHeight - cornerSize + 4);
+            ctx.stroke();
+
+            // Etiqueta "FOTOGRAFÍA" debajo de la foto
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '500 11px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('FOTOGRAFÍA OFICIAL', photoX + photoWidth / 2, photoY + photoHeight + 25);
 
             /* ----------------------------------------
-               DATOS (DERECHA)
+               DATOS DEL CONDUCTOR
                ---------------------------------------- */
-            const dataX = 400;
+            const dataX = 380;
             let dataY = 150;
             const lineSpacing = 85;
 
             ctx.textAlign = 'left';
 
-            // Función auxiliar para dibujar campo de datos
             function drawDataField(label, value, yPos) {
+                // Línea decorativa celeste
+                ctx.strokeStyle = '#74acdf';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(dataX - 10, yPos);
+                ctx.lineTo(dataX - 10, yPos + 50);
+                ctx.stroke();
+
                 // Etiqueta
-                ctx.font = '500 12px Inter, sans-serif';
+                ctx.font = '500 11px Inter, sans-serif';
                 ctx.fillStyle = '#6b7280';
                 ctx.fillText(label, dataX, yPos);
 
@@ -574,11 +714,10 @@
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(dataX, yPos + 60);
-                ctx.lineTo(canvas.width - 60, yPos + 60);
+                ctx.lineTo(canvas.width - 50, yPos + 60);
                 ctx.stroke();
             }
 
-            // Dibujar todos los campos
             drawDataField('NÚMERO DE REGISTRO', data.regNumber, dataY);
             dataY += lineSpacing;
 
@@ -594,10 +733,47 @@
             drawDataField('MODELO', data.modelo.toUpperCase(), dataY);
 
             /* ----------------------------------------
+               SELLO DIGITAL
+               ---------------------------------------- */
+            const sealX = canvas.width - 180;
+            const sealY = 460;
+            const sealSize = 120;
+
+            // Círculo exterior
+            ctx.strokeStyle = 'rgba(116, 172, 223, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(sealX, sealY, sealSize / 2, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Círculo interior
+            ctx.beginPath();
+            ctx.arc(sealX, sealY, sealSize / 2 - 8, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Texto del sello
+            ctx.fillStyle = 'rgba(116, 172, 223, 0.5)';
+            ctx.font = '500 13px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('ARGENTINA', sealX, sealY - 15);
+            ctx.font = 'bold 16px Inter, sans-serif';
+            ctx.fillText('RP', sealX, sealY + 5);
+            ctx.font = '500 11px Inter, sans-serif';
+            ctx.fillText('ROLEPLAY', sealX, sealY + 22);
+
+            /* ----------------------------------------
                FOOTER
                ---------------------------------------- */
-            ctx.fillStyle = '#1a2332';
+            const footerGradient = ctx.createLinearGradient(0, canvas.height - 60, canvas.width, canvas.height);
+            footerGradient.addColorStop(0, '#1a2332');
+            footerGradient.addColorStop(0.5, '#2c3e50');
+            footerGradient.addColorStop(1, '#1a2332');
+            ctx.fillStyle = footerGradient;
             ctx.fillRect(0, canvas.height - 60, canvas.width, 60);
+
+            // Línea decorativa celeste en el footer
+            ctx.fillStyle = '#74acdf';
+            ctx.fillRect(0, canvas.height - 60, canvas.width, 3);
 
             ctx.fillStyle = '#a0aec0';
             ctx.font = '400 14px Inter, sans-serif';
@@ -621,14 +797,12 @@
            FUNCIÓN: DESCARGAR LICENCIA
            ============================================ */
         function downloadLicense(format) {
-            // Verificar que se haya generado la licencia
             const regNumber = document.getElementById('regNumber').value;
             if (!regNumber) {
                 alert('Por favor genere la licencia antes de descargarla.');
                 return;
             }
 
-            // Crear enlace de descarga
             const link = document.createElement('a');
             const fileName = `Licencia_${regNumber.replace(/[^a-zA-Z0-9]/g, '_')}`;
             
@@ -651,7 +825,6 @@
             document.getElementById('fileName').textContent = 'Ningún archivo seleccionado';
             uploadedImage = null;
             
-            // Restablecer fechas por defecto
             const today = new Date();
             document.getElementById('regDate').valueAsDate = today;
             
@@ -659,7 +832,6 @@
             renewDate.setFullYear(renewDate.getFullYear() + 5);
             document.getElementById('renewDate').valueAsDate = renewDate;
             
-            // Limpiar canvas
             drawEmptyCanvas();
         }
     </script>
