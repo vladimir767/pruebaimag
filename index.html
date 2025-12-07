@@ -368,55 +368,6 @@
         const canvas = document.getElementById('licenseCanvas');
         const ctx = canvas.getContext('2d');
         let uploadedImage = null;
-        let logoImage = null;
-
-        /* ============================================
-           LOGO SVG - Argentina Roleplay
-           Logo creado basado en la imagen proporcionada
-           ============================================ */
-        const logoSVG = `
-            <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                <!-- Círculo exterior azul oscuro -->
-                <circle cx="60" cy="60" r="58" fill="#1e3a5f" stroke="#2c5282" stroke-width="2"/>
-                
-                <!-- Círculo interior con bandera argentina -->
-                <circle cx="60" cy="60" r="48" fill="#87CEEB"/>
-                <rect x="12" y="45" width="96" height="10" fill="white"/>
-                <rect x="12" y="65" width="96" height="10" fill="white"/>
-                
-                <!-- Sol de Mayo -->
-                <circle cx="60" cy="60" r="8" fill="#FDB813"/>
-                <g id="rays">
-                    <line x1="60" y1="52" x2="60" y2="44" stroke="#FDB813" stroke-width="1.5"/>
-                    <line x1="65.7" y1="54.3" x2="71.4" y2="48.6" stroke="#FDB813" stroke-width="1.5"/>
-                    <line x1="68" y1="60" x2="76" y2="60" stroke="#FDB813" stroke-width="1.5"/>
-                    <line x1="65.7" y1="65.7" x2="71.4" y2="71.4" stroke="#FDB813" stroke-width="1.5"/>
-                    <line x1="60" y1="68" x2="60" y2="76" stroke="#FDB813" stroke-width="1.5"/>
-                    <line x1="54.3" y1="65.7" x2="48.6" y2="71.4" stroke="#FDB813" stroke-width="1.5"/>
-                    <line x1="52" y1="60" x2="44" y2="60" stroke="#FDB813" stroke-width="1.5"/>
-                    <line x1="54.3" y1="54.3" x2="48.6" y2="48.6" stroke="#FDB813" stroke-width="1.5"/>
-                </g>
-                
-                <!-- Texto RP -->
-                <text x="60" y="70" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">RP</text>
-                
-                <!-- Texto curvo superior ARGENTINA -->
-                <path id="topCurve" d="M 18 60 A 42 42 0 0 1 102 60" fill="none"/>
-                <text font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white" letter-spacing="2">
-                    <textPath href="#topCurve" startOffset="50%" text-anchor="middle">ARGENTINA</textPath>
-                </text>
-                
-                <!-- Texto curvo inferior ROLEPLAY -->
-                <path id="bottomCurve" d="M 18 60 A 42 42 0 0 0 102 60" fill="none"/>
-                <text font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white" letter-spacing="2">
-                    <textPath href="#bottomCurve" startOffset="50%" text-anchor="middle">ROLEPLAY</textPath>
-                </text>
-                
-                <!-- Puntos decorativos -->
-                <circle cx="14" cy="60" r="3" fill="white"/>
-                <circle cx="106" cy="60" r="3" fill="white"/>
-            </svg>
-        `;
 
         /* ============================================
            INICIALIZACIÓN
@@ -428,23 +379,7 @@
         renewDate.setFullYear(renewDate.getFullYear() + 5);
         document.getElementById('renewDate').valueAsDate = renewDate;
 
-        // Cargar logo SVG
-        loadLogo();
         drawEmptyCanvas();
-
-        /* ============================================
-           FUNCIÓN: CARGAR LOGO
-           ============================================ */
-        function loadLogo() {
-            const img = new Image();
-            const blob = new Blob([logoSVG], {type: 'image/svg+xml'});
-            const url = URL.createObjectURL(blob);
-            
-            img.onload = function() {
-                logoImage = img;
-            };
-            img.src = url;
-        }
 
         /* ============================================
            MANEJO DE CARGA DE IMAGEN
@@ -517,22 +452,99 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // Patrón de líneas diagonales sutiles celeste
-            ctx.strokeStyle = 'rgba(135, 206, 235, 0.06)';
+            ctx.strokeStyle = 'rgba(135, 206, 235, 0.08)';
             ctx.lineWidth = 1;
             
-            for (let i = -canvas.height; i < canvas.width + canvas.height; i += 40) {
+            for (let i = -canvas.height; i < canvas.width + canvas.height; i += 30) {
                 ctx.beginPath();
                 ctx.moveTo(i, 0);
                 ctx.lineTo(i + canvas.height, canvas.height);
                 ctx.stroke();
             }
 
-            // Banda superior celeste muy suave
-            const gradient = ctx.createLinearGradient(0, 0, 0, 180);
-            gradient.addColorStop(0, 'rgba(135, 206, 235, 0.08)');
+            // Banda superior celeste suave
+            const gradient = ctx.createLinearGradient(0, 0, 0, 140);
+            gradient.addColorStop(0, 'rgba(135, 206, 235, 0.15)');
             gradient.addColorStop(1, 'rgba(135, 206, 235, 0)');
             ctx.fillStyle = gradient;
-            ctx.fillRect(0, 100, canvas.width, 180);
+            ctx.fillRect(0, 100, canvas.width, 140);
+
+            // Banda inferior celeste suave
+            const gradientBottom = ctx.createLinearGradient(0, canvas.height - 60, 0, canvas.height);
+            gradientBottom.addColorStop(0, 'rgba(135, 206, 235, 0)');
+            gradientBottom.addColorStop(1, 'rgba(135, 206, 235, 0.15)');
+            ctx.fillStyle = gradientBottom;
+            ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
+        }
+
+        /* ============================================
+           FUNCIÓN: DIBUJAR BANDERA ARGENTINA
+           ============================================ */
+        function drawArgentineFlag(x, y, width, height) {
+            // Franja celeste superior
+            ctx.fillStyle = '#74acdf';
+            ctx.fillRect(x, y, width, height / 3);
+
+            // Franja blanca central
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(x, y + height / 3, width, height / 3);
+
+            // Franja celeste inferior
+            ctx.fillStyle = '#74acdf';
+            ctx.fillRect(x, y + (2 * height / 3), width, height / 3);
+
+            // Sol de Mayo simplificado (centro)
+            const sunX = x + width / 2;
+            const sunY = y + height / 2;
+            const sunRadius = Math.min(width, height) * 0.15;
+
+            // Círculo amarillo del sol
+            ctx.fillStyle = '#fcbf49';
+            ctx.beginPath();
+            ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Rayos del sol
+            ctx.strokeStyle = '#fcbf49';
+            ctx.lineWidth = 1.5;
+            for (let i = 0; i < 16; i++) {
+                const angle = (Math.PI * 2 * i) / 16;
+                const startX = sunX + Math.cos(angle) * sunRadius;
+                const startY = sunY + Math.sin(angle) * sunRadius;
+                const endX = sunX + Math.cos(angle) * (sunRadius * 1.6);
+                const endY = sunY + Math.sin(angle) * (sunRadius * 1.6);
+                
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+            }
+
+            // Borde de la bandera
+            ctx.strokeStyle = '#e5e7eb';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x, y, width, height);
+        }
+
+        /* ============================================
+           FUNCIÓN: DIBUJAR MARCA DE AGUA
+           ============================================ */
+        function drawWatermark() {
+            ctx.save();
+            
+            // Configurar transparencia
+            ctx.globalAlpha = 0.03;
+            ctx.fillStyle = '#74acdf';
+            ctx.font = 'bold 120px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Rotar y dibujar texto
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(-Math.PI / 6);
+            ctx.fillText('ARGENTINA RP', 0, 0);
+            
+            ctx.restore();
         }
 
         /* ============================================
@@ -542,13 +554,16 @@
             // Paso 1: Fondo con patrón argentino
             drawArgentineBackground();
 
-            // Paso 2: Borde exterior
+            // Paso 2: Marca de agua
+            drawWatermark();
+
+            // Paso 3: Borde exterior
             ctx.strokeStyle = '#d1d5db';
             ctx.lineWidth = 3;
             ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
 
             /* ----------------------------------------
-               HEADER PRINCIPAL
+               HEADER
                ---------------------------------------- */
             // Fondo del header con degradado
             const headerGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
@@ -556,73 +571,42 @@
             headerGradient.addColorStop(0.5, '#2c3e50');
             headerGradient.addColorStop(1, '#1a2332');
             ctx.fillStyle = headerGradient;
-            ctx.fillRect(0, 0, canvas.width, 110);
+            ctx.fillRect(0, 0, canvas.width, 100);
 
-            // Línea decorativa celeste superior
+            // Línea decorativa celeste en el header
             ctx.fillStyle = '#74acdf';
-            ctx.fillRect(0, 0, canvas.width, 3);
-
-            // Línea decorativa celeste inferior del header
-            ctx.fillStyle = '#74acdf';
-            ctx.fillRect(0, 107, canvas.width, 3);
+            ctx.fillRect(0, 95, canvas.width, 5);
 
             // Título principal
             ctx.fillStyle = '#ffffff';
-            ctx.font = '700 36px Inter, sans-serif';
+            ctx.font = '600 32px Inter, sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
-            ctx.fillText('LICENCIA DE CONDUCIR', canvas.width / 2, 25);
+            ctx.fillText('LICENCIA DE CONDUCIR', canvas.width / 2, 30);
 
             // Subtítulo
             ctx.font = '400 16px Inter, sans-serif';
             ctx.fillStyle = '#a0aec0';
-            ctx.fillText('Argentina Roleplay', canvas.width / 2, 70);
+            ctx.fillText('Argentina Roleplay', canvas.width / 2, 65);
 
-            // Logo Argentina Roleplay (superior derecha)
-            // CAMBIAR logoX y logoY para mover el logo
-            if (logoImage) {
-                const logoSize = 85;
-                const logoX = canvas.width - logoSize - 25; // Posición X del logo
-                const logoY = 12;                           // Posición Y del logo
-                ctx.drawImage(logoImage, logoX, logoY, logoSize, logoSize);
-            }
+            // Bandera argentina pequeña en esquina superior derecha
+            drawArgentineFlag(canvas.width - 180, 15, 140, 70);
 
             /* ----------------------------------------
-               FRANJA ACADEMIA DE CONDUCCIÓN
-               ---------------------------------------- */
-            // Franja celeste suave
-            const academyGradient = ctx.createLinearGradient(0, 110, 0, 145);
-            academyGradient.addColorStop(0, 'rgba(116, 172, 223, 0.15)');
-            academyGradient.addColorStop(1, 'rgba(116, 172, 223, 0.08)');
-            ctx.fillStyle = academyGradient;
-            ctx.fillRect(0, 110, canvas.width, 35);
-
-            // Texto Academia de Conducción
-            ctx.fillStyle = '#1e3a5f';
-            ctx.font = '600 14px Inter, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.letterSpacing = '1px';
-            ctx.fillText('ACADEMIA DE CONDUCCIÓN', canvas.width / 2, 128);
-
-            /* ----------------------------------------
-               FOTOGRAFÍA CON MARCO PROFESIONAL
+               FOTOGRAFÍA CON MARCO ESTILIZADO
                ---------------------------------------- */
             const photoX = 50;
-            const photoY = 170;
+            const photoY = 140;
             const photoWidth = 280;
             const photoHeight = 360;
 
-            // Marco exterior azul oscuro
-            ctx.fillStyle = '#1e3a5f';
-            ctx.fillRect(photoX - 6, photoY - 6, photoWidth + 12, photoHeight + 12);
-
-            // Marco intermedio celeste
+            // Marco exterior celeste
             ctx.fillStyle = '#74acdf';
-            ctx.fillRect(photoX - 3, photoY - 3, photoWidth + 6, photoHeight + 6);
+            ctx.fillRect(photoX - 8, photoY - 8, photoWidth + 16, photoHeight + 16);
 
             // Marco interior blanco
             ctx.fillStyle = '#ffffff';
-            ctx.fillRect(photoX - 1, photoY - 1, photoWidth + 2, photoHeight + 2);
+            ctx.fillRect(photoX - 4, photoY - 4, photoWidth + 8, photoHeight + 8);
 
             // Dibujar la imagen del usuario
             if (uploadedImage) {
@@ -644,10 +628,10 @@
                 }
 
                 ctx.save();
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
-                ctx.shadowBlur = 8;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+                ctx.shadowBlur = 10;
                 ctx.shadowOffsetX = 0;
-                ctx.shadowOffsetY = 3;
+                ctx.shadowOffsetY = 4;
                 
                 ctx.drawImage(
                     uploadedImage,
@@ -658,34 +642,66 @@
                 ctx.restore();
             }
 
-            // Etiqueta debajo de la foto
+            // Patrón decorativo en esquinas de la foto
+            ctx.strokeStyle = '#74acdf';
+            ctx.lineWidth = 3;
+            const cornerSize = 20;
+            
+            // Esquina superior izquierda
+            ctx.beginPath();
+            ctx.moveTo(photoX - 4, photoY + cornerSize);
+            ctx.lineTo(photoX - 4, photoY - 4);
+            ctx.lineTo(photoX + cornerSize, photoY - 4);
+            ctx.stroke();
+            
+            // Esquina superior derecha
+            ctx.beginPath();
+            ctx.moveTo(photoX + photoWidth - cornerSize + 4, photoY - 4);
+            ctx.lineTo(photoX + photoWidth + 4, photoY - 4);
+            ctx.lineTo(photoX + photoWidth + 4, photoY + cornerSize);
+            ctx.stroke();
+            
+            // Esquina inferior izquierda
+            ctx.beginPath();
+            ctx.moveTo(photoX - 4, photoY + photoHeight - cornerSize + 4);
+            ctx.lineTo(photoX - 4, photoY + photoHeight + 4);
+            ctx.lineTo(photoX + cornerSize, photoY + photoHeight + 4);
+            ctx.stroke();
+            
+            // Esquina inferior derecha
+            ctx.beginPath();
+            ctx.moveTo(photoX + photoWidth - cornerSize + 4, photoY + photoHeight + 4);
+            ctx.lineTo(photoX + photoWidth + 4, photoY + photoHeight + 4);
+            ctx.lineTo(photoX + photoWidth + 4, photoY + photoHeight - cornerSize + 4);
+            ctx.stroke();
+
+            // Etiqueta "FOTOGRAFÍA" debajo de la foto
             ctx.fillStyle = '#6b7280';
             ctx.font = '500 11px Inter, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('FOTOGRAFÍA OFICIAL', photoX + photoWidth / 2, photoY + photoHeight + 20);
+            ctx.fillText('FOTOGRAFÍA OFICIAL', photoX + photoWidth / 2, photoY + photoHeight + 25);
 
             /* ----------------------------------------
                DATOS DEL CONDUCTOR
                ---------------------------------------- */
             const dataX = 380;
-            let dataY = 180;
+            let dataY = 150;
             const lineSpacing = 85;
 
             ctx.textAlign = 'left';
 
             function drawDataField(label, value, yPos) {
-                // Línea vertical decorativa celeste
+                // Línea decorativa celeste
                 ctx.strokeStyle = '#74acdf';
-                ctx.lineWidth = 3;
+                ctx.lineWidth = 2;
                 ctx.beginPath();
-                ctx.moveTo(dataX - 12, yPos);
-                ctx.lineTo(dataX - 12, yPos + 50);
+                ctx.moveTo(dataX - 10, yPos);
+                ctx.lineTo(dataX - 10, yPos + 50);
                 ctx.stroke();
 
                 // Etiqueta
-                ctx.font = '600 11px Inter, sans-serif';
+                ctx.font = '500 11px Inter, sans-serif';
                 ctx.fillStyle = '#6b7280';
-                ctx.letterSpacing = '0.5px';
                 ctx.fillText(label, dataX, yPos);
 
                 // Valor
@@ -693,7 +709,7 @@
                 ctx.fillStyle = '#1a1a1a';
                 ctx.fillText(value, dataX, yPos + 28);
 
-                // Línea divisoria horizontal
+                // Línea divisoria
                 ctx.strokeStyle = '#e5e7eb';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -702,7 +718,6 @@
                 ctx.stroke();
             }
 
-            // Dibujar todos los campos de datos
             drawDataField('NÚMERO DE REGISTRO', data.regNumber, dataY);
             dataY += lineSpacing;
 
@@ -718,12 +733,37 @@
             drawDataField('MODELO', data.modelo.toUpperCase(), dataY);
 
             /* ----------------------------------------
+               SELLO DIGITAL
+               ---------------------------------------- */
+            const sealX = canvas.width - 180;
+            const sealY = 460;
+            const sealSize = 120;
+
+            // Círculo exterior
+            ctx.strokeStyle = 'rgba(116, 172, 223, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(sealX, sealY, sealSize / 2, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Círculo interior
+            ctx.beginPath();
+            ctx.arc(sealX, sealY, sealSize / 2 - 8, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Texto del sello
+            ctx.fillStyle = 'rgba(116, 172, 223, 0.5)';
+            ctx.font = '500 13px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('ARGENTINA', sealX, sealY - 15);
+            ctx.font = 'bold 16px Inter, sans-serif';
+            ctx.fillText('RP', sealX, sealY + 5);
+            ctx.font = '500 11px Inter, sans-serif';
+            ctx.fillText('ROLEPLAY', sealX, sealY + 22);
+
+            /* ----------------------------------------
                FOOTER
                ---------------------------------------- */
-            // Línea decorativa celeste superior del footer
-            ctx.fillStyle = '#74acdf';
-            ctx.fillRect(0, canvas.height - 63, canvas.width, 3);
-
             const footerGradient = ctx.createLinearGradient(0, canvas.height - 60, canvas.width, canvas.height);
             footerGradient.addColorStop(0, '#1a2332');
             footerGradient.addColorStop(0.5, '#2c3e50');
@@ -731,16 +771,15 @@
             ctx.fillStyle = footerGradient;
             ctx.fillRect(0, canvas.height - 60, canvas.width, 60);
 
-            // Texto del footer
+            // Línea decorativa celeste en el footer
+            ctx.fillStyle = '#74acdf';
+            ctx.fillRect(0, canvas.height - 60, canvas.width, 3);
+
             ctx.fillStyle = '#a0aec0';
-            ctx.font = '400 13px Inter, sans-serif';
+            ctx.font = '400 14px Inter, sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText('Argentina Roleplay - Sistema de Licencias', canvas.width / 2, canvas.height - 30);
-
-            // Línea decorativa celeste inferior
-            ctx.fillStyle = '#74acdf';
-            ctx.fillRect(0, canvas.height - 3, canvas.width, 3);
         }
 
         /* ============================================
